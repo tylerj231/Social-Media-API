@@ -5,17 +5,29 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
 
+from SocialMediaAPI import settings
+
 
 class User(AbstractUser):
+
+    class GenderChoices(models.TextChoices):
+        MALE = "Male",
+        FEMALE = "Female"
+
     bio = models.CharField(
         max_length=300,
         blank=True,
         null=True
     )
+    gender = GenderChoices.choices
     profile_picture = models.ImageField(
         null=True,
         blank=True,
         upload_to="user_profile_image_path"
+    )
+    following = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="users",
     )
 
     def __str__(self):
@@ -35,11 +47,18 @@ class Post(models.Model):
         unique=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.TextField(max_length=700)
-    users = models.ManyToManyField(User, related_name="posts")
+    content = models.TextField()
+
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="posts"
+    )
+    hashtag = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.title
-
-class Follow(models.Model):
-    users = models.ManyToManyField(User, related_name="followers")
