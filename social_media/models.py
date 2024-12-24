@@ -8,11 +8,17 @@ from django.utils.text import slugify
 from SocialMediaAPI import settings
 
 
-class User(AbstractUser):
+class Profile(models.Model):
 
     class GenderChoices(models.TextChoices):
         MALE = "Male",
         FEMALE = "Female"
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile"
+    )
 
     bio = models.CharField(
         max_length=300,
@@ -20,6 +26,7 @@ class User(AbstractUser):
         null=True
     )
     gender = GenderChoices.choices
+
     profile_picture = models.ImageField(
         null=True,
         blank=True,
@@ -31,13 +38,13 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return self.username
+        return f"{self.user.first_name} {self.user.last_name}"
 
     def user_profile_image_path(self, filename):
         _, extension = os.path.splitext(filename)
         return os.path.join(
             "uploads/images/",
-            f"{slugify(self.username)}-{uuid.uuid4()}{extension}"
+            f"{slugify(self.user.username)}-{uuid.uuid4()}{extension}"
         )
 
 
@@ -62,3 +69,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class User(AbstractUser):
+
+    def __str__(self):
+        return self.username
