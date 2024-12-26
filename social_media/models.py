@@ -25,7 +25,12 @@ class Profile(models.Model):
         blank=True,
         null=True
     )
-    gender = GenderChoices.choices
+    gender = models.CharField(
+        max_length=50,
+        choices=GenderChoices.choices,
+        null=True,
+        blank=True
+    )
 
     profile_picture = models.ImageField(
         null=True,
@@ -34,7 +39,8 @@ class Profile(models.Model):
     )
     following = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="users",
+        related_name="following",
+        blank=True,
     )
 
     def __str__(self):
@@ -54,23 +60,17 @@ class Post(models.Model):
         unique=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
+    content = models.TextField(max_length=10000)
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="posts"
+        related_name="posts",
     )
     hashtag = models.CharField(
         max_length=50,
-        blank=True,
         null=True
     )
 
     def __str__(self):
         return self.title
-
-class User(AbstractUser):
-
-    def __str__(self):
-        return self.username

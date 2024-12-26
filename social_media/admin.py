@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from social_media.models import User, Post
+from social_media.models import Post
 
-admin.site.register(User)
 admin.site.register(Post)
