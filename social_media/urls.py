@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 router.register("profiles", ProfileViewSet)
 router.register("posts", PostViewSet)
 
-app_name = 'social_media'
+app_name = "social_media"
 
 urlpatterns = [
     path("", include(router.urls)),
