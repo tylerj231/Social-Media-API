@@ -10,7 +10,7 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class ManageUserView(generics.RetrieveUpdateAPIView):
-   serializer_class = UserSerializer
+    serializer_class = UserSerializer
 
-   def get_object(self):
-       return self.request.user
+    def get_object(self):
+        return self.request.user

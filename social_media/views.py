@@ -1,11 +1,9 @@
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from social_media.models import Profile, Post
-from social_media.permissions import (
-    IsOwnerOrReadOnly,
-    IsAuthorOrReadOnly
-)
+from social_media.permissions import IsOwnerOrReadOnly, IsAuthorOrReadOnly
 from social_media.serializers import (
     ProfileSerializer,
     PostSerializer,
@@ -19,7 +17,7 @@ from social_media.serializers import (
 class ProfileViewSet(ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly, IsAuthenticated]
 
     def get_queryset(self):
         queryset = self.queryset.prefetch_related("user", "following")
@@ -59,7 +57,7 @@ class ProfileViewSet(ModelViewSet):
                 name="gender",
                 type=str,
                 description="Filter profiles by gender. EX: /profiles?gender=Male",
-            )
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):
@@ -101,7 +99,7 @@ class PostViewSet(ModelViewSet):
                 name="title",
                 type=str,
                 description="Filter posts by title. EX: /posts?title=How I met your mother",
-            )
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):

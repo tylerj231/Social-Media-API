@@ -26,16 +26,27 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="profile"
     )
 
-    bio = models.CharField(max_length=300, blank=True, null=True)
+    bio = models.CharField(
+        max_length=300,
+        blank=True,
+        null=True
+    )
     gender = models.CharField(
-        max_length=50, choices=GenderChoices.choices, null=True, blank=True
+        max_length=50,
+        choices=GenderChoices.choices,
+        null=True,
+        blank=True
     )
 
     profile_picture = models.ImageField(
-        null=True, blank=True, upload_to="user_profile_image_path"
+        null=True,
+        blank=True,
+        upload_to="user_profile_image_path"
     )
     following = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -49,7 +60,9 @@ class Profile(models.Model):
 
     @property
     def followers(self):
-        return User.objects.filter(profile__following=self.user).count()
+        return User.objects.filter(
+            profile__following=self.user
+        ).count()
 
     @property
     def full_name(self):
