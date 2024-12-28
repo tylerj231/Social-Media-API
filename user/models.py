@@ -1,7 +1,10 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext as _
+from rest_framework.validators import UniqueValidator
 
 
 class UserManager(BaseUserManager):
@@ -49,11 +52,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-
     objects = UserManager()
-
-    class Meta:
-        unique_together = ("email",)
-
     def __str__(self):
         return self.email

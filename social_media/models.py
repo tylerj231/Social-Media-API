@@ -95,4 +95,4 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        unique_together = ("title", "author")
+        unique_together = ("title",)
