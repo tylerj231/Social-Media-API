@@ -3,7 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from social_media.models import Profile, Post
-from social_media.permissions import IsOwnerOrReadOnly, IsAuthorOrReadOnly
+from social_media.permissions import (
+    IsOwnerOrReadOnly,
+    IsAuthorOrReadOnly
+)
 from social_media.serializers import (
     ProfileSerializer,
     PostSerializer,
